@@ -1,6 +1,31 @@
+import { useState } from 'react'
 import AssignmentCard from './AssignmentCard.jsx'
 
-export default function ResultsScreen({ assignments, onReset }) {
+export default function ResultsScreen({ assignments, onReset, onTurnIn }) {
+  // doneMap[assignmentIdx][taskIdx] = true/false
+  const [doneMap, setDoneMap] = useState({})
+
+  function handleTaskToggle(aIdx, tIdx, isDone) {
+    setDoneMap((prev) => ({
+      ...prev,
+      [aIdx]: { ...(prev[aIdx] ?? {}), [tIdx]: isDone },
+    }))
+  }
+
+  function handleTurnIn() {
+    const completed = []
+    assignments.forEach((a, aIdx) => {
+      ;(a.tasks ?? []).forEach((task, tIdx) => {
+        if (doneMap[aIdx]?.[tIdx]) {
+          completed.push({ assignmentTitle: a.title, text: task.text ?? task, description: task.description })
+        }
+      })
+    })
+    onTurnIn(completed)
+  }
+
+  const completedCount = Object.values(doneMap).flatMap(Object.values).filter(Boolean).length
+
   if (assignments.length === 0) {
     return (
       <div className="screen" style={{ textAlign: 'center', paddingTop: 80 }}>
@@ -34,8 +59,25 @@ export default function ResultsScreen({ assignments, onReset }) {
       </div>
 
       {assignments.map((a, i) => (
-        <AssignmentCard key={i} title={a.title} tasks={a.tasks} colorIndex={i} />
+        <AssignmentCard
+          key={i}
+          title={a.title}
+          tasks={a.tasks}
+          colorIndex={i}
+          onTaskToggle={(tIdx, isDone) => handleTaskToggle(i, tIdx, isDone)}
+        />
       ))}
+
+      <div style={{ marginTop: 32, textAlign: 'center' }}>
+        <button
+          className="btn-primary"
+          onClick={handleTurnIn}
+          disabled={completedCount === 0}
+          style={{ fontSize: '1.1rem', padding: '16px 40px', opacity: completedCount === 0 ? 0.4 : 1 }}
+        >
+          📬 Turn in work ({completedCount} done)
+        </button>
+      </div>
     </div>
   )
 }

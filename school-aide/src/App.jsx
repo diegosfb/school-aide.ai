@@ -3,10 +3,12 @@ import { transcribeAudio } from './services/transcribe.js'
 import { structureTranscript } from './services/structure.js'
 import InputScreen from './components/InputScreen.jsx'
 import ResultsScreen from './components/ResultsScreen.jsx'
+import GradingScreen from './components/GradingScreen.jsx'
 
 export default function App() {
   const [screen, setScreen] = useState('input')
   const [assignments, setAssignments] = useState([])
+  const [completedTasks, setCompletedTasks] = useState([])
   const [error, setError] = useState(null)
 
   async function handleSubmit(audioBlob) {
@@ -25,7 +27,13 @@ export default function App() {
 
   function handleReset() {
     setAssignments([])
+    setCompletedTasks([])
     setScreen('input')
+  }
+
+  function handleTurnIn(tasks) {
+    setCompletedTasks(tasks)
+    setScreen('grading')
   }
 
   if (screen === 'loading') {
@@ -41,8 +49,12 @@ export default function App() {
     )
   }
 
+  if (screen === 'grading') {
+    return <GradingScreen completedTasks={completedTasks} onBack={() => setScreen('results')} />
+  }
+
   if (screen === 'results') {
-    return <ResultsScreen assignments={assignments} onReset={handleReset} />
+    return <ResultsScreen assignments={assignments} onReset={handleReset} onTurnIn={handleTurnIn} />
   }
 
   return <InputScreen onSubmit={handleSubmit} error={error} />

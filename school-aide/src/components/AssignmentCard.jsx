@@ -8,7 +8,7 @@ const CARD_COLORS = [
   { bg: '#fce4ec', accent: '#e91e63' },
 ]
 
-export default function AssignmentCard({ title, tasks, colorIndex }) {
+export default function AssignmentCard({ title, tasks, colorIndex, onTaskToggle }) {
   const color = CARD_COLORS[colorIndex % CARD_COLORS.length]
 
   return (
@@ -25,7 +25,12 @@ export default function AssignmentCard({ title, tasks, colorIndex }) {
       <h2 style={{ color: color.accent, marginBottom: 16 }}>{title}</h2>
       <ul style={{ padding: 0 }}>
         {(tasks ?? []).map((task, i) => (
-          <TaskItem key={i} text={task.text ?? task} description={task.description} />
+          <TaskItem
+            key={i}
+            text={task.text ?? task}
+            description={task.description}
+            onToggle={(done) => onTaskToggle?.(i, done)}
+          />
         ))}
       </ul>
     </div>

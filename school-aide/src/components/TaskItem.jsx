@@ -1,11 +1,17 @@
 import { useState } from 'react'
 
-export default function TaskItem({ text, description }) {
+export default function TaskItem({ text, description, onToggle }) {
   const [done, setDone] = useState(false)
+
+  function handleToggle() {
+    const next = !done
+    setDone(next)
+    onToggle?.(next)
+  }
 
   return (
     <li
-      onClick={() => setDone((d) => !d)}
+      onClick={handleToggle}
       style={{
         display: 'flex',
         alignItems: 'flex-start',
