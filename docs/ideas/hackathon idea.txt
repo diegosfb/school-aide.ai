@@ -5,7 +5,13 @@ The input is an mp3 with the capture from the class and what the teacher was say
 The idea is to convert the normal conversation to plain cleaner instructions easy to understand for kids with learning disabilities
 
 
+Step 1 Break down tasks
 
+Step 2 Present task to student
+One check from student of task done
+
+Step 3 Present tasks and student checks to teacher for review.
+One check from the teacher of task reviewed and OK or rework needed.
 
 
 Teacher helper to manage crisis from a kid.

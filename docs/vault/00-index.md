@@ -211,3 +211,9 @@ PRD · Specs · Architecture · ADRs · Backlog · Estimation · UX · Reviews �
 - [[Notes/20260921T091507308054Z-implementation-note-renamed-resources-folder-to-resources]] — Renamed Resources folder to resources
 
 - [[Notes/20260929T191402802397Z-implementation-note-initialized-school-aide-ai-repository-bootstrap]] — Initialized school-aide.ai repository bootstrap
+
+- [[Notes/20260929T203054871329Z-implementation-note-hardened-school-aide-openrouter-env-handling]] — Hardened school-aide OpenRouter env handling
+
+- [[Notes/20260929T203627135810Z-implementation-note-added-openrouter-validation-script-for-school-aide]] — Added OpenRouter validation script for school-aide
+
+- [[Notes/20260929T204057963701Z-implementation-note-configured-school-aide-openrouter-anthropic-model-slug]] — Configured school-aide OpenRouter Anthropic model slug

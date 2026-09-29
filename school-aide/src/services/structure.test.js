@@ -25,7 +25,11 @@ vi.stubGlobal('fetch', vi.fn(async (_url, { body }) => {
 }))
 
 describe('structureTranscript', () => {
-  beforeEach(() => { vi.resetModules() })
+  beforeEach(() => {
+    vi.resetModules()
+    vi.stubEnv('VITE_OPENROUTER_API_KEY', 'sk-or-test')
+    fetch.mockClear()
+  })
 
   it('returns assignments with tasks from a transcript', async () => {
     const { structureTranscript } = await import('./structure.js')
@@ -45,5 +49,15 @@ describe('structureTranscript', () => {
     const { structureTranscript } = await import('./structure.js')
     const result = await structureTranscript('json fences test')
     expect(result).toEqual({ assignments: [] })
+  })
+
+  it('fails before fetch when OpenRouter key is missing', async () => {
+    vi.stubEnv('VITE_OPENROUTER_API_KEY', '')
+    const { structureTranscript } = await import('./structure.js')
+
+    await expect(structureTranscript('Do math worksheet page 10.'))
+      .rejects
+      .toThrow('Missing VITE_OPENROUTER_API_KEY')
+    expect(fetch).not.toHaveBeenCalled()
   })
 })

@@ -1,5 +1,6 @@
 const OPENROUTER_API = 'https://openrouter.ai/api/v1/chat/completions'
-const MODEL = 'anthropic/claude-3.5-sonnet'
+const MODEL = 'anthropic/claude-sonnet-4.5'
+const OPENROUTER_KEY_PREFIX = 'sk-or-'
 
 const SYSTEM_PROMPT = `You are a helper for teachers. You work with kids who have learning disabilities.
 
@@ -31,18 +32,28 @@ Return ONLY a JSON object. No markdown. No extra text. This exact format:
 
 If no assignments were mentioned, return: {"assignments": []}`
 
+function getOpenRouterApiKey() {
+  const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY?.trim()
+  if (!apiKey || apiKey === 'your_openrouter_key_here' || !apiKey.startsWith(OPENROUTER_KEY_PREFIX)) {
+    throw new Error('Missing VITE_OPENROUTER_API_KEY. Add a sk-or- OpenRouter key to .env, then restart npm run dev.')
+  }
+  return apiKey
+}
+
 export async function structureTranscript(transcript) {
   if (!transcript || transcript.trim() === '') {
     return { assignments: [] }
   }
 
+  const apiKey = getOpenRouterApiKey()
+
   const res = await fetch(OPENROUTER_API, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
+      'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
       'HTTP-Referer': 'http://localhost:5173',
-      'X-Title': 'school-aide',
+      'X-OpenRouter-Title': 'school-aide',
     },
     body: JSON.stringify({
       model: MODEL,
@@ -54,7 +65,9 @@ export async function structureTranscript(transcript) {
     }),
   })
 
-  if (!res.ok) throw new Error(`OpenRouter error: ${res.status}`)
+  if (!res.ok) {
+    throw new Error(`OpenRouter error: ${res.status}. If you just edited .env, restart npm run dev.`)
+  }
 
   const data = await res.json()
   const text = data.choices?.[0]?.message?.content ?? ''
