@@ -1,4 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk'
+const OPENROUTER_API = 'https://openrouter.ai/api/v1/chat/completions'
+const MODEL = 'anthropic/claude-3.5-sonnet'
 
 const SYSTEM_PROMPT = `You are a helper for teachers. You work with kids who have learning disabilities.
 
@@ -35,25 +36,30 @@ export async function structureTranscript(transcript) {
     return { assignments: [] }
   }
 
-  const client = new Anthropic({
-    apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY,
-    dangerouslyAllowBrowser: true,
+  const res = await fetch(OPENROUTER_API, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'http://localhost:5173',
+      'X-Title': 'school-aide',
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: 4096,
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: `Here is what the teacher said:\n\n${transcript}\n\nReturn the JSON now.` },
+      ],
+    }),
   })
 
-  const response = await client.messages.create({
-    model: 'claude-opus-5-5',
-    max_tokens: 4096,
-    system: SYSTEM_PROMPT,
-    messages: [{
-      role: 'user',
-      content: `Here is what the teacher said:\n\n${transcript}\n\nReturn the JSON now.`,
-    }],
-  })
+  if (!res.ok) throw new Error(`OpenRouter error: ${res.status}`)
 
-  const textBlock = response.content.find((b) => b.type === 'text')
-  if (!textBlock) return { assignments: [] }
+  const data = await res.json()
+  const text = data.choices?.[0]?.message?.content ?? ''
 
-  const raw = textBlock.text
+  const raw = text
     .trim()
     .replace(/^```(?:json)?\n?/, '')
     .replace(/\n?```$/, '')

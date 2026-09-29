@@ -1,35 +1,27 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-vi.mock('@anthropic-ai/sdk', () => ({
-  default: vi.fn(() => ({
-    messages: {
-      create: vi.fn(async ({ messages }) => {
-        const input = messages[0].content
-        if (input.includes('math worksheet')) {
-          return {
-            content: [{
-              type: 'text',
-              text: JSON.stringify({
-                assignments: [{
-                  title: 'Math Worksheet',
-                  tasks: ['Step 1: Open your math book.', 'Step 2: Do page 10.'],
-                }],
-              }),
-            }],
-          }
-        }
-        if (input.includes('json fences')) {
-          return {
-            content: [{
-              type: 'text',
-              text: '```json\n{"assignments":[]}\n```',
-            }],
-          }
-        }
-        return { content: [{ type: 'text', text: '{"assignments":[]}' }] }
-      }),
-    },
-  })),
+vi.stubGlobal('fetch', vi.fn(async (_url, { body }) => {
+  const { messages } = JSON.parse(body)
+  const input = messages.find((m) => m.role === 'user')?.content ?? ''
+
+  let text
+  if (input.includes('math worksheet')) {
+    text = JSON.stringify({
+      assignments: [{
+        title: 'Math Worksheet',
+        tasks: ['Step 1: Open your math book.', 'Step 2: Do page 10.'],
+      }],
+    })
+  } else if (input.includes('json fences')) {
+    text = '```json\n{"assignments":[]}\n```'
+  } else {
+    text = '{"assignments":[]}'
+  }
+
+  return {
+    ok: true,
+    json: async () => ({ choices: [{ message: { content: text } }] }),
+  }
 }))
 
 describe('structureTranscript', () => {
@@ -49,7 +41,7 @@ describe('structureTranscript', () => {
     expect(result).toEqual({ assignments: [] })
   })
 
-  it('strips markdown code fences from Claude response', async () => {
+  it('strips markdown code fences from response', async () => {
     const { structureTranscript } = await import('./structure.js')
     const result = await structureTranscript('json fences test')
     expect(result).toEqual({ assignments: [] })
