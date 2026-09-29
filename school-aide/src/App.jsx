@@ -14,8 +14,8 @@ export default function App() {
     setScreen('loading')
     try {
       const transcript = await transcribeAudio(audioBlob)
-      const { assignments: parsed } = await structureTranscript(transcript)
-      setAssignments(parsed)
+      const result = await structureTranscript(transcript)
+      setAssignments(result.assignments ?? [])
       setScreen('results')
     } catch (e) {
       setError(e.message ?? 'Something went wrong. Please try again.')

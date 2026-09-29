@@ -26,13 +26,16 @@ export async function transcribeAudio(audioBlob) {
   if (!transcriptRes.ok) throw new Error('Transcription request failed')
   const { id } = await transcriptRes.json()
 
-  while (true) {
+  let attempts = 0
+  while (attempts++ < 90) {
     await sleep(2000)
     const pollRes = await fetch(`${ASSEMBLYAI_API}/transcript/${id}`, {
       headers: { authorization: apiKey },
     })
+    if (!pollRes.ok) throw new Error(`Poll failed: ${pollRes.status}`)
     const data = await pollRes.json()
     if (data.status === 'completed') return data.text ?? ''
     if (data.status === 'error') throw new Error(data.error ?? 'Transcription failed')
   }
+  throw new Error('Transcription timed out. Please try again.')
 }
