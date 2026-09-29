@@ -1,0 +1,12 @@
+listen to teacher instructions; and distilled the conversation from the teacher into tasks and instructions for a particular assignments.
+Create a list of assignments and whithin the assignments a list of tasks.
+
+The input is an mp3 with the capture from the class and what the teacher was saying and explaining.
+The idea is to convert the normal conversation to plain cleaner instructions easy to understand for kids with learning disabilities
+
+
+
+
+
+Teacher helper to manage crisis from a kid.
+Hardware with screen (Tablet to capture voice, recommend tasks and approve and have a manage crisis button)
