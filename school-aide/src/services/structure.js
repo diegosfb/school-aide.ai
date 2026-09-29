@@ -23,12 +23,20 @@ Return ONLY a JSON object. No markdown. No extra text. This exact format:
     {
       "title": "Short name for the assignment",
       "tasks": [
-        "Step 1: Do this thing.",
-        "Step 2: Do this next thing."
+        {
+          "text": "Step 1: Do this thing.",
+          "description": "One or two short sentences. Tell the student exactly how to do it. Simple words only."
+        }
       ]
     }
   ]
 }
+
+Rules for "description":
+- 1 or 2 sentences only.
+- Grade 3 words. No hard words.
+- Say where to look, what to pick up, or what to do first.
+- Example: "Open the red folder on your desk. Take out the top sheet."
 
 If no assignments were mentioned, return: {"assignments": []}`
 

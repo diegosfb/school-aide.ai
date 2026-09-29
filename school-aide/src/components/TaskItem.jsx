@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function TaskItem({ text }) {
+export default function TaskItem({ text, description }) {
   const [done, setDone] = useState(false)
 
   return (
@@ -41,17 +41,34 @@ export default function TaskItem({ text }) {
       >
         {done ? '✓' : ''}
       </span>
-      <span
-        style={{
-          fontSize: '1.05rem',
-          fontWeight: 600,
-          textDecoration: done ? 'line-through' : 'none',
-          color: done ? 'var(--color-text-soft)' : 'var(--color-text)',
-          transition: 'color 0.2s',
-          flex: 1,
-        }}
-      >
-        {text}
+      <span style={{ flex: 1 }}>
+        <span
+          style={{
+            display: 'block',
+            fontSize: '1.05rem',
+            fontWeight: 600,
+            textDecoration: done ? 'line-through' : 'none',
+            color: done ? 'var(--color-text-soft)' : 'var(--color-text)',
+            transition: 'color 0.2s',
+          }}
+        >
+          {text}
+        </span>
+        {description && (
+          <span
+            style={{
+              display: 'block',
+              fontSize: '0.88rem',
+              fontWeight: 400,
+              color: done ? 'var(--color-text-soft)' : '#666',
+              marginTop: 4,
+              lineHeight: 1.4,
+              textDecoration: done ? 'line-through' : 'none',
+            }}
+          >
+            {description}
+          </span>
+        )}
       </span>
     </li>
   )

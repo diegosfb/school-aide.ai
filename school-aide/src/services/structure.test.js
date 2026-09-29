@@ -9,7 +9,10 @@ vi.stubGlobal('fetch', vi.fn(async (_url, { body }) => {
     text = JSON.stringify({
       assignments: [{
         title: 'Math Worksheet',
-        tasks: ['Step 1: Open your math book.', 'Step 2: Do page 10.'],
+        tasks: [
+          { text: 'Step 1: Open your math book.', description: 'Find your math book in your bag.' },
+          { text: 'Step 2: Do page 10.', description: 'Turn the pages until you see the number 10.' },
+        ],
       }],
     })
   } else if (input.includes('json fences')) {

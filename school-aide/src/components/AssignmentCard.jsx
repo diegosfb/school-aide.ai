@@ -25,7 +25,7 @@ export default function AssignmentCard({ title, tasks, colorIndex }) {
       <h2 style={{ color: color.accent, marginBottom: 16 }}>{title}</h2>
       <ul style={{ padding: 0 }}>
         {(tasks ?? []).map((task, i) => (
-          <TaskItem key={i} text={task} />
+          <TaskItem key={i} text={task.text ?? task} description={task.description} />
         ))}
       </ul>
     </div>
