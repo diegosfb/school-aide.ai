@@ -16,3 +16,6 @@ One check from the teacher of task reviewed and OK or rework needed.
 
 Teacher helper to manage crisis from a kid.
 Hardware with screen (Tablet to capture voice, recommend tasks and approve and have a manage crisis button)
+
+
+Break it down into a frontend, a backend service that received the transcription and sends the tasks and assignments to the front end, another backend services that received the mp3 and converts to transcription (if the input is mp3 sent to this service)
