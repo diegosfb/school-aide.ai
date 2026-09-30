@@ -1,1 +1,0 @@
-../../.agents/agents/architect-agent/subagents/mobile-architect/mobile-architect.md

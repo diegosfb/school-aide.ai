@@ -1,1 +1,0 @@
-../../.agents/agents/spec-validation-agent/subagents/security-check-agent/security-check-agent.md

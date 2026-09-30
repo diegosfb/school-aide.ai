@@ -1,1 +1,0 @@
-../../.agents/agents/test-agent/subagents/red-team-agent/red-team-agent.md

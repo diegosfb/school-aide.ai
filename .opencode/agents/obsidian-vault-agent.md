@@ -1,1 +1,0 @@
-../../.agents/agents/obsidian-vault-agent/obsidian-vault-agent.md

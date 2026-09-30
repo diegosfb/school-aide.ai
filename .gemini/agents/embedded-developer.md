@@ -1,1 +1,0 @@
-../../.agents/agents/developer-agent/subagents/embedded-developer/embedded-developer.md

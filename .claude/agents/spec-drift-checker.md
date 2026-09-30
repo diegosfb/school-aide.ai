@@ -1,1 +1,0 @@
-../../.agents/agents/spec-validation-agent/subagents/spec-drift-checker/spec-drift-checker.md

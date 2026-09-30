@@ -1,1 +1,0 @@
-../../.agents/agents/architect-agent/subagents/embedded-architect/embedded-architect.md

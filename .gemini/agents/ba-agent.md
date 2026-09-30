@@ -1,1 +1,0 @@
-../../.agents/agents/ba-agent/ba-agent.md

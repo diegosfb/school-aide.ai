@@ -1,1 +1,0 @@
-../../.agents/agents/architect-agent/subagents/iot-architect/iot-architect.md

@@ -1,1 +1,0 @@
-../../.agents/agents/spec-validation-agent/spec-validation-agent.md
